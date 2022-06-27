@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: /tags/*
 
-Sitemap: https://nick4f42.github.io/julia-intro-course/sitemap.xml
+Sitemap: https://nick4f42.github.io/sitemap.xml
