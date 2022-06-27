@@ -1,0 +1,1174 @@
+#+HUGO_BASE_DIR: ../
+#+HUGO_WEIGHT: auto
+#+HUGO_SECTION: control-flow
+#+HUGO_PAIRED_SHORTCODES: katex
+#+OPTIONS: ^:{}
+#+PROPERTY: header-args:jupyter-julia :session control-flow :exports both :eval no-export :async yes
+
+* TODO Control Flow
+:PROPERTIES:
+:EXPORT_HUGO_WEIGHT: 300
+:EXPORT_FILE_NAME: _index
+:END:
+
+* Conditions
+:PROPERTIES:
+:EXPORT_FILE_NAME: conditions
+:END:
+
+When you're writing a script, you will often want to run different code based on different conditions. Conditions can come in many forms, but they are typically reduced to either ~true~ or ~false~. A value that is either ~true~ or ~false~ is called a /boolean/ (named after the logician George Boole).
+
+Julia has boolean constants ~true~ and ~false~:
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>true
+true
+
+<font color="#98C379"><b>julia&gt; </b></font>false
+false
+</pre>
+#+END_EXPORT
+
+Let's look at how to turn a condition into a boolean.
+
+** Numeric Comparisons
+
+There are many different conditions on numbers in mathematics. For example,
+
+#+attr_shortcode: display
+#+begin_katex
+\begin{align*}
+x &= 5 \\
+x &\ne 10 \\
+x &> 2 \\
+\end{align*}
+#+end_katex
+
+Julia has operators for these comparisons. They return ~true~ or ~false~ based on whether the condition is met.
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>5 &gt; 3
+true
+
+<font color="#98C379"><b>julia&gt; </b></font>2 &lt; -10
+false
+</pre>
+#+END_EXPORT
+
+Like any other operator, the values being compared are fully evaluated before comparison:
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>x = 5
+5
+
+<font color="#98C379"><b>julia&gt; </b></font>y = 8
+8
+
+<font color="#98C379"><b>julia&gt; </b></font>x &lt; y
+true
+</pre>
+#+END_EXPORT
+
+| Operator           | Comparison            |
+|--------------------+-----------------------|
+| ~==~               | equality              |
+| ~!=~, ~≠~ (=\ne=)  | inequality            |
+| ~<~                | less than             |
+| ~<=~, ~≤~ (=\leq=) | less than or equal    |
+| ~>~                | greater than          |
+| ~>=~, ~≥~ (=\geq=) | greater than or equal |
+
+
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>1 == 1
+true
+
+<font color="#98C379"><b>julia&gt; </b></font>1 == 2
+false
+
+<font color="#98C379"><b>julia&gt; </b></font>1 != 1
+false
+
+<font color="#98C379"><b>julia&gt; </b></font>1 ≠ 2
+true
+
+<font color="#98C379"><b>julia&gt; </b></font>1 &lt; 2
+true
+
+<font color="#98C379"><b>julia&gt; </b></font>2 &lt; 1
+false
+
+<font color="#98C379"><b>julia&gt; </b></font>4 &gt; 3
+true
+
+<font color="#98C379"><b>julia&gt; </b></font>3 ≥ 3
+true
+
+<font color="#98C379"><b>julia&gt; </b></font>2 &gt;= 3
+false
+
+<font color="#98C379"><b>julia&gt; </b></font>1.5 &lt; 1.6
+true
+
+<font color="#98C379"><b>julia&gt; </b></font>1 == 1.0
+true
+</pre>
+#+END_EXPORT
+
+Comparisons are chained together like in math. For example, ~1 < x < 5~ is true only if ~x~ is between ~1~ and ~5~. Also, ~x == y == z~ is true only if ~x~, ~y~, and ~z~ are equal.
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>1 &lt; 2 &lt; 3
+true
+
+<font color="#98C379"><b>julia&gt; </b></font>1 == 1 == 2
+false
+
+<font color="#98C379"><b>julia&gt; </b></font>1 == 1 &lt; 3
+true
+</pre>
+#+END_EXPORT
+
+** Boolean Operators
+
+Lots of conditions involve combining other conditions. For example, ~x > 5~ and ~y == 2~. You can express these conditions with the boolean operators for /and/, /or/, and /not/:
+
+- and: ~x && y~
+  - are ~x~ and ~y~ are both ~true~?
+- or: ~x || y~
+  - is at least one of ~x~ and ~y~ ~true~?
+- not: ~!x~
+  - ~true~ if ~x~ is ~false~, ~false~ if ~x~ is ~true~
+
+Here are the outputs for each input combination:
+
+- and
+  - ~false && false~ is ~false~
+  - ~false && true~ is ~false~
+  - ~true && false~ is ~false~
+  - ~true && true~ is ~true~
+- or
+  - ~false || false~ is ~false~
+  - ~false || true~ is ~true~
+  - ~true || false~ is ~true~
+  - ~true || true~ is ~true~
+- not
+  - ~!false~ is ~true~
+  - ~!true~ is ~false~
+
+You can find the precedence of these operators in the [[https://docs.julialang.org/en/v1/manual/mathematical-operations/#Operator-Precedence-and-Associativity][Julia manual]]. In short, ~&&~ is evaluated before ~||~. That is, ~x && y || z~ is equivalent to ~(x && y) || z~. When in doubt, use parentheses.
+
+** Exercises
+
+*** Exercise 1
+
+Create a function ~inside_circle~ that determines if a point is inside a circle.
+
+#+begin_src julia
+inside_circle(r, (x, y))
+#+end_src
+
+The circle has radius ~r~ and is centered at the origin ~(0, 0)~. The function should return ~true~ if the point ~(x, y)~ is inside the circle and ~false~ otherwise.
+
+*** Exercise 2
+
+Create a function ~passes_class~ that determines if a student passes a class.
+
+#+begin_src julia
+passes_class(midterm1, midterm2, final, hw_avg, attendance)
+#+end_src
+
+For example, ~passes_class(0.95, 0.83, 0.91, 0.99, 0.6)~ means that the student got 95% on midterm 1, 83% on midterm 2, 91% on the final, averaged 99% on homework, and attended 60% of their classes.
+
+A students overall grade is determined by averaging each grade with the following weights:
+#+begin_src julia
+grade = 0.3 * (midterm1 + midterm2) + 0.2 * final + 0.2 * hw_avg
+#+end_src
+
+The function should return a boolean deciding whether a student passes the class based on the following conditions:
+
+- A student fails if they attend less than half of classes
+- If a student gets less than 30% on any exam (midterm of final), they fail
+- The student fails if their overall grade is below 60%
+- Otherwise, a student passes
+
+#+hugo: {{< expand "Hint" >}}
+
+I recommend making boolean variables for each condition above. For example, ~attendance_ok~, ~exam_ok~, and ~grade_ok~. The student should only pass if all variables are ~true~.
+
+#+hugo: {{< /expand >}}
+
+* Code Blocks
+:PROPERTIES:
+:EXPORT_FILE_NAME: code-blocks
+:END:
+
+A code block in Julia is used to group code together. They usually start with a keyword and end with the word =end=. The most basic block is the =begin= block.
+
+** Begin Block
+
+All the begin block does is group code together into a single expression. The last expression in the block is the blocks value. A begin block might look like this:
+
+#+begin_src julia
+begin
+    x = 2
+    y = 1
+    x + y
+end
+#+end_src
+
+Typing this in the REPL, you will see that the value of the last expression ~x + y~ is outputted.
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>begin
+       x = 2
+       y = 1
+       x + y
+       end
+3
+</pre>
+#+END_EXPORT
+
+Everything from =begin= to =end= is replaced with the value of the last expression. For example, you can assign the value to a variable:
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>y = begin
+           x = 2 + 2
+           x * 5
+       end
+20
+
+<font color="#98C379"><b>julia&gt; </b></font>y
+20
+</pre>
+#+END_EXPORT
+
+
+You will also notice that the variables defined in the block are also accessible outside.
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>x
+4
+</pre>
+#+END_EXPORT
+
+=begin= blocks are useful for running multiple lines of code in one REPL prompt. They are also when working with macros, which you will learn about in a later section.
+
+** Function Block
+
+You've already seen function blocks, but they are left here for completeness. They look like:
+
+#+begin_src julia
+function name_of_function(args)
+    # code
+end
+#+end_src
+
+A function block is actually equivalent to an assignment-style function with a =begin= block:
+
+#+begin_src julia
+name_of_function(args) = begin
+    # code
+end
+#+end_src
+
+It's usually better to just use a =function= block so it's clear you're defining a function.
+
+** Let Block
+
+A =let= block creates a new /local scope/ with the specified local variables.
+
+#+begin_src julia
+# x doesn't exist here
+
+let x = 1
+    # x is 1
+    println(x)
+end
+
+# x doesn't exist here
+#+end_src
+
+You can specify multiple variables in the let block header by separating the assignments with commas.
+
+#+begin_src julia
+let x = 1, y = 2
+    println(x + y)
+end
+#+end_src
+
+Variables in the let block header replace outside variables for the duration of the block:
+
+#+begin_src julia
+x = 5
+# x is 5
+# y doesn't exist here
+
+let x = 1, y = 2
+    # x is 1
+    # y is 2
+    println(x + y)
+end
+
+# x is 5
+# y doesn't exist here
+#+end_src
+
+** Other Blocks
+
+Conditional blocks like =if=, =else=, and =elseif= can choose code to run based on a =true=/=false= condition. They will be covered in the next section.
+
+=while= and =for= loops can run the same code multiple times. They will be covered after conditional blocks.
+
+There are also blocks like =do=, =quote=, and =macro=.
+
+* Conditional Blocks
+:PROPERTIES:
+:EXPORT_FILE_NAME: conditional-blocks
+:END:
+
+So far, your code has been layed out linearly:
+
+#+begin_src julia
+# A
+# B
+# C
+#+end_src
+
+In reality, ~# A~ is just a comment and doesn't execute any code. ~A~, ~B~, and ~C~ just represent where code might be. In this example, the code would run in sequence:
+
+#+BEGIN_EXPORT hugo
+{{< mermaid class="text-center" >}}
+graph LR
+    A --> B --> C
+{{< /mermaid >}}
+#+END_EXPORT
+
+Conditional blocks let you creates /branches/ in this sequence.
+
+** If Block
+
+An =if= block takes a boolean and executes the block only if the boolean is =true=.
+
+#+begin_src julia
+if condition
+    # A
+end
+# after
+#+end_src
+
+#+BEGIN_EXPORT hugo
+{{< mermaid class="text-center" >}}
+graph TD
+    if[check condition]
+    if -- true --> A --> after
+    if -- false --> after
+{{< /mermaid >}}
+#+END_EXPORT
+
+For example, the following code prints a different message depending on the ~age~ variable.
+
+#+begin_src jupyter-julia
+age = 21
+
+if age >= 16
+    println("You can drive.")
+end
+
+if age < 21
+    println("You can't drink.")
+end
+
+println(age)
+#+end_src
+
+#+RESULTS:
+: You can drive.
+: 21
+
+#+BEGIN_EXPORT hugo
+{{< mermaid class="text-center" >}}
+graph TD
+    A[set age to 21] --> if_1(["check if age ≥ 16"])
+    if_1 -- true --> B["print #quot;You can drive.#quot;"] --> if_2
+    if_1 -- false --> if_2
+    if_2([check if age < 21])
+    if_2 -- true --> C["print #quot;You can't drink.#quot;"] --> D
+    if_2 -- false --> D
+    D[print age]
+
+    linkStyle 0,1,2,6 stroke:red;
+{{< /mermaid >}}
+#+END_EXPORT
+
+The red connections represent the path that is actually taken by the code when it runs.
+
+** Else Block
+
+You can attach an =else= block to an =if= block to execute code if the condition is ~false~. Together, they are called an if-else block. In general, they look like:
+
+#+begin_src julia
+if condition
+    # A
+else
+    # B
+end
+# after
+#+end_src
+
+This corresponds to the following flow chart:
+
+#+BEGIN_EXPORT hugo
+{{< mermaid class="text-center" >}}
+graph TD
+    if([check condition])
+    if -- true --> A
+    if -- false --> B
+    A & B --> after
+{{< /mermaid >}}
+#+END_EXPORT
+
+For example, this code chooses what to do based on if =x= is greater or equal to =21=.
+
+#+begin_src jupyter-julia
+age = 25
+
+if age >= 21
+    println("you can drink!")
+else
+    println("go grab a juice box")
+end
+#+end_src
+
+#+RESULTS:
+: you can drink!
+
+#+BEGIN_EXPORT hugo
+{{< mermaid class="text-center" >}}
+graph TD
+    A[set age to 25] --> if(["check if age ≥ 21"])
+    if -- true --> B["print #quot;you can drink!#quot;"]
+    if -- false --> C["print #quot;go grab a juice box#quot;"]
+
+    linkStyle 0,1 stroke:red;
+{{< /mermaid >}}
+#+END_EXPORT
+
+** Elseif Block
+
+If you change the =else= in an else block to =elseif=, you can specify another condition.
+
+#+begin_src julia
+if x
+    # A
+elseif y
+    # B
+end
+# after
+#+end_src
+
+This is equivalent to:
+
+#+begin_src julia
+if x
+    # A
+else
+    if y
+        # B
+    end
+end
+# after
+#+end_src
+
+#+BEGIN_EXPORT hugo
+{{< mermaid class="text-center" >}}
+graph TD
+    if_x([check x])
+    if_x -- true --> A ---> after
+    if_x -- false --> if_y([check y])
+    if_y -- true --> B --> after
+    if_y -- false --> after
+{{< /mermaid >}}
+#+END_EXPORT
+
+You can specify many different =elseif= blocks on one =if= block.
+
+#+begin_src julia
+if x
+    # A
+elseif y
+    # B
+elseif z
+    # C
+end
+# after
+#+end_src
+
+#+BEGIN_EXPORT hugo
+{{< mermaid class="text-center" >}}
+graph TD
+    if_x([check x])
+    if_x -- true --> A ----> after
+    if_x -- false --> if_y([check y])
+    if_y -- true --> B ---> after
+    if_y -- false --> if_z([check z])
+    if_z -- true --> C --> after
+    if_z -- false --> after
+{{< /mermaid >}}
+#+END_EXPORT
+
+You can also add an =else= block after any amount of =elseif= blocks:
+
+#+begin_src julia
+
+if x
+    # A
+elseif y
+    # B
+else
+    # C
+end
+# after
+#+end_src
+
+#+BEGIN_EXPORT hugo
+{{< mermaid class="text-center" >}}
+graph TD
+    if_x([check x])
+    if_x -- true --> A ---> after
+    if_x -- false --> if_y([check y])
+    if_y -- true --> B --> after
+    if_y -- false --> C --> after
+{{< /mermaid >}}
+#+END_EXPORT
+
+For example:
+
+#+begin_src jupyter-julia
+speed = 90
+
+if speed < 40
+    println("too slow")
+elseif speed > 80
+    println("too fast")
+else
+    println("just right")
+end
+
+println(speed)
+#+end_src
+
+#+RESULTS:
+: too fast
+: 90
+
+#+BEGIN_EXPORT hugo
+{{< mermaid class="text-center" >}}
+graph TD
+    A[set speed to 90] --> if_1([check if speed < 40])
+    if_1 -- true --> B["print #quot;too slow#quot;"] ---> E
+    if_1 -- false --> if_2([check if speed > 80])
+    if_2 -- true --> C["print #quot;too fast#quot;"] --> E
+    if_2 -- false --> D["print #quot;just right#quot;"] --> E
+    E[print speed]
+
+    linkStyle 0,3,4,5 stroke:red;
+{{< /mermaid >}}
+#+END_EXPORT
+
+** If/Else Output
+
+Say you wanted to set ~y~ to the absolute value of ~x~ without using the built-in ~abs~ function. You could use an if/else statement. In words, we want `y` to be `-x` if `x` is negative and just `x` otherwise.
+
+#+begin_src julia
+x = -10
+
+if x < 0
+    y = -x
+else
+    y = x
+end
+#+end_src
+
+This works fine, but it doesn't really reflect how we conceptualized the absolute value. There are two different assignments to ~y~ in the code. It would be better to think of only one assignment to ~y~ like a piecewise expression in mathematics:
+
+#+attr_shortcode: display
+#+begin_katex
+y = \begin{cases}
+-x & \text{if } x < 0 \\
+x & \text{otherwise}
+\end{cases}
+#+end_katex
+
+Chained if/else/elseif blocks evaluate to the last statement they execute. Because of this, you can assign their output to a variable:
+
+#+begin_src julia
+x = -10
+
+y = if x < 0
+    -x
+else
+    x
+end
+#+end_src
+
+This works no matter how many blocks you have. Consider the following piecewise function:
+
+#+attr_shortcode: display
+#+begin_katex
+f(x) = \begin{cases}
+-x/2 & \text{if } x < 0 \\
+\sqrt{x} & \text{if } 0 \leq x < 1 \\
+1 / x & \text{otherwise}
+\end{cases}
+#+end_katex
+
+You can translate ~f~ into Julia very easily:
+
+#+begin_src julia
+f(x) = if x < 0
+    -x / 2
+elseif 0 ≤ x < 1
+    sqrt(x)
+else
+    1 / x
+end
+#+end_src
+
+If the code gets to the ~0 ≤ x < 1~ check, ~x < 0~ must have been ~false~. Because of this, it's okay to leave out the ~0 ≤ x~ part:
+
+#+begin_src jupyter-julia :results none
+f(x) = if x < 0
+    -x / 2
+elseif x < 1
+    sqrt(x)
+else
+    1 / x
+end
+#+end_src
+
+Here is ~f~'s output for some test values:
+
+#+begin_src jupyter-julia :results output
+@show f(-2)
+@show f(0.25)
+@show f(5)
+#+end_src
+
+#+RESULTS:
+: f(-2) = 1.0
+: f(0.25) = 0.5
+: f(5) = 0.2
+
+* While Loops
+:PROPERTIES:
+:EXPORT_FILE_NAME: while-loops
+:END:
+** Basic Structure
+
+A =while= block executes code /while/ a condition is true. In general, a =while= block looks like:
+
+#+begin_src julia
+# A
+while condition
+    # B
+end
+# C
+#+end_src
+
+The =A=, =B=, and =C= comments represent some code that might be there. Julia follows these steps when executing this code:
+
+#+BEGIN_EXPORT hugo
+{{< mermaid class="text-center" >}}
+graph TD
+    A --> while[check condition]
+    while -- true --> B --> while
+    while -- false ---> C
+{{< /mermaid >}}
+#+END_EXPORT
+
+If the condition is always ~false~, the block will not execute:
+
+#+begin_src jupyter-julia
+while false
+    println("won't print")
+end
+println("will print")
+#+end_src
+
+#+RESULTS:
+: will print
+
+If the condition is always ~true~, the block will execute forever (or until you interrupt the execution with =CTRL-c=).
+
+#+begin_src julia
+while true
+    println("hi")
+end
+#+end_src
+
+If the condition depends on a variable, the while loop can run some whole number of times:
+
+#+begin_src jupyter-julia
+x = 1
+while x <= 5
+    println(x)
+    x += 1
+end
+println("done")
+#+end_src
+
+#+RESULTS:
+: 1
+: 2
+: 3
+: 4
+: 5
+: done
+
+#+BEGIN_EXPORT hugo
+{{< mermaid class="text-center" >}}
+graph TD
+    A[set x to 1] --> while["check if x ≤ 5"]
+    while -- true --> B[print x] --> C[increase x's value by one] --> while
+    while -- false ----> D["print #quot;done#quot;"]
+{{< /mermaid >}}
+#+END_EXPORT
+
+This has the effect of printing the integers between =1= and =5=, then printing "done". Here's a similar example that counts down instead of up:
+
+#+begin_src jupyter-julia
+t = 3
+while t > 0
+    println(t)
+    sleep(1)
+    t -= 1
+end
+println("liftoff!")
+#+end_src
+
+** Exercises
+
+*** Exercise 1
+
+Without running it, determine the output of the following code:
+
+#+name: while-exercise-1
+#+begin_src julia
+x = 1234
+
+while x > 0
+    print(x % 10)
+    x = div(x, 10)
+end
+
+println()
+#+end_src
+
+* For Loops
+:PROPERTIES:
+:EXPORT_FILE_NAME: for-loops
+:END:
+
+** Basic Structure
+
+For loops are useful for running the same code for multiple values. If you find yourself writing code like this:
+
+#+begin_src julia
+println(1)
+println(2)
+println(3)
+println(4)
+println(5)
+#+end_src
+
+a for loop would make your life much easier. In general, a for loop looks like:
+
+#+begin_src julia
+for var in iterable
+    # code
+end
+#+end_src
+
+In Julia, an /iterator/ is something that has individual elements that can be taken one by one. For example, =(1, 2, 3)= is an iterator since you can take out =1=, =2=, then =3=. The variable =iterable= represents any value that is an iterator.
+
+#+BEGIN_EXPORT hugo
+{{< mermaid class="text-center" >}}
+graph TD
+    A[get next value in iterable]
+    A -- has next --> B[set var to next value] --> C[run code inside loop] --> A
+    A -- none left ----> D[exit loop]
+{{< /mermaid >}}
+#+END_EXPORT
+
+For example, if =iterable= was =(1, 2, 3)=, the for loop above would be similar to:
+#+begin_src julia
+var = 1
+# code
+
+var = 2
+# code
+
+var = 3
+# code
+#+end_src
+
+Consider this example:
+
+#+begin_src julia
+for x in (1, 2, 3)
+    println("inside for loop!")
+    println(x)
+end
+#+end_src
+
+This would be like writing
+#+begin_src julia
+x = 1
+println("inside for loop!")
+println(x)
+
+x = 2
+println("inside for loop!")
+println(x)
+
+x = 3
+println("inside for loop!")
+println(x)
+#+end_src
+
+#+hugo: {{< hint type=note >}}
+Instead of writing ~for x in y~, you could write ~for x = y~ or ~for x ∈ y~. Each of them are equivalent.
+#+hugo: {{< /hint >}}
+
+** Ranges
+
+Instead of manually typing a range of integers like ~(1, 2, 3, 4, 5)~, you can use a /range/. Julia lets you specify a range of numbers from ~start~ to ~stop~ with ~start:stop~.
+
+#+begin_src jupyter-julia
+for x in 1:5
+    println(x)
+end
+#+end_src
+
+#+RESULTS:
+: 1
+: 2
+: 3
+: 4
+: 5
+
+You can also specify an interval ~step~ with ~start:step:stop~.
+
+#+begin_src jupyter-julia
+for x in 0:2:6
+    println(x)
+end
+#+end_src
+
+#+RESULTS:
+: 0
+: 2
+: 4
+: 6
+
+This works with decimal numbers as well:
+
+#+begin_src jupyter-julia
+for x in 0:0.25:1
+    println(x)
+end
+#+end_src
+
+#+RESULTS:
+: 0.0
+: 0.25
+: 0.5
+: 0.75
+: 1.0
+
+** Variable Unpacking
+
+Say you had a tuple of ~(x, y)~ points:
+
+#+begin_src jupyter-julia :results none
+points = ((3, 4), (1, 1), (-3, 10))
+#+end_src
+
+You can iterate over it in the same way as ranges:
+
+#+begin_src jupyter-julia
+for point in points
+    x, y = point
+    println("x = ", x)
+end
+#+end_src
+
+#+RESULTS:
+: x = 3
+: x = 1
+: x = -3
+
+Instead of unpacking ~point~ into ~(x, y)~ inside the block, you can do it after the =for= keyword:
+
+#+begin_src jupyter-julia :results none
+for (x, y) in points
+    println("x = ", x)
+end
+#+end_src
+
+** Strings
+
+Strings are like lists of characters, so they can be iterated over with a for loop.
+
+#+begin_src jupyter-julia
+for c in "Hello!"
+    println("char: ", c)
+end
+#+end_src
+
+#+RESULTS:
+: char: H
+: char: e
+: char: l
+: char: l
+: char: o
+: char: !
+
+=c= is assigned to the individual characters ~'H'~, ~'e'~, ~'l'~, ~'l'~, ~'o'~, and ~'!'~. Remember, a character surrounded by single quotes like ~'x'~ is a single character while anything between double quotes like ~"xyz"~ is a string of characters.
+
+For example, if you wanted to change every ~'H'~ to a ~'J'~ you could add an if statement at the start of the block:
+
+#+begin_src jupyter-julia
+for c in "Hello!"
+    # If c is 'H', use 'J'
+    # Otherwise, use c
+    char = if c == 'H'
+        'J'
+    else
+        c
+    end
+
+    println("char: ", char)
+end
+#+end_src
+
+#+RESULTS:
+: char: J
+: char: e
+: char: l
+: char: l
+: char: o
+: char: !
+
+** Nested For Loops
+
+There's nothing stopping you from putting for loops inside of other for loops:
+
+#+begin_src jupyter-julia
+for x in "AB"
+    for y in (1, 2)
+        println(x, y)
+    end
+end
+#+end_src
+
+#+RESULTS:
+: A1
+: A2
+: B1
+: B2
+
+Julia provides an easier way to type the above:
+
+#+begin_src jupyter-julia
+for x in "AB", y in (1, 2)
+    println(x, y)
+end
+#+end_src
+
+#+RESULTS:
+: A1
+: A2
+: B1
+: B2
+
+** Exercises
+
+*** Exercise 1
+
+Using a for loop, print the following output:
+
+#+begin_src julia :results output :exports results
+for x in 1:6
+    println('*' ^ x)
+end
+#+end_src
+
+#+RESULTS:
+: *
+: **
+: ***
+: ****
+: *****
+: ******
+
+Note that the ~^~ operator repeats a character. For example, ~'x' ^ 5~ is ~"xxxxx"~.
+
+*** Exercise 2
+
+Using a for loop, create a function ~count_char(c, word)~ that counts the number of characters ~c~ in ~word~.
+
+*** Exercise 3
+
+The following function ~english_words~ returns a list of over 400k English words.
+
+#+begin_src julia
+using Downloads
+
+function english_words()
+    io = Downloads.download(
+        "https://raw.githubusercontent.com/dwyl/english-words/master/words.txt",
+        IOBuffer())
+    seekstart(io)
+    return readlines(io)
+end
+#+end_src
+
+Print out every English word that has 4 or more 'z's.
+
+* Loop Control
+:PROPERTIES:
+:EXPORT_FILE_NAME: loop-control
+:END:
+
+In both =while= and =for= loops, there are a couple keywords that allow you to further control their execution.
+
+** Break
+
+When Julia arrives at a ~break~ statement, the loop is immediately stopped. For example, this loop usually prints the numbers from 1 to 5:
+
+#+begin_src jupyter-julia
+for x in 1:5
+    println(x)
+end
+#+end_src
+
+#+RESULTS:
+: 1
+: 2
+: 3
+: 4
+: 5
+
+Adding a break statement when =x= is =3= has this effect:
+
+#+begin_src jupyter-julia
+for x in 1:5
+    if x == 3
+        println("breaking!")
+        break
+    end
+
+    println(x)
+end
+#+end_src
+
+#+RESULTS:
+: 1
+: 2
+: breaking!
+
+** Continue
+
+When Julia arrives at a ~continue~ statement, the current loop is skipped and the loop continues at the next step. For example, replacing the =break= with =continue= in the example above has this effect:
+
+#+begin_src jupyter-julia
+for x in 1:5
+    if x == 3
+        println("skipping!")
+        continue
+    end
+
+    println(x)
+end
+#+end_src
+
+#+RESULTS:
+: 1
+: 2
+: skipping!
+: 4
+: 5
+
+** Return
+
+The =return= statement immediately exits a function, even if the =return= statement is inside a loop. You can use this to control the flow of a loop.
+
+For example, the following function returns the first even number in a collection of numbers, or nothing if there are only odd numbers.
+
+#+begin_src jupyter-julia :results none
+function first_even(nums)
+    for x in nums
+        if iseven(x)
+            return x
+        end
+    end
+    return nothing
+end
+#+end_src
+
+Testing this function out:
+
+#+begin_src jupyter-julia
+first_even((1, 3, 5, 8, 9))
+#+end_src
+
+#+RESULTS:
+: 8
+
+** Exercises
+
+*** Exercise 1
+
+Consider the following =while= loop:
+
+#+begin_src julia
+x = 1
+while x < 5
+    println(x)
+    x += 1
+end
+#+end_src
+
+Now, write code that has the same output by replacing the =while= loop with...
+
+1. A =for= loop
+2. A =while true= loop
+
+*** Exercise 2
+
+Create a function ~isprime(n)~ that determines whether ~n~ is prime.
+
+#+hugo: {{< expand "Prime Numbers" >}}
+A prime number is a whole number greater than 1 that is only divisible by 1 and itself. For example, 7 is prime but 6 is not since you can evenly divide 6 by 2.
+#+hugo: {{< /expand >}}
+
+#+hugo: {{< expand "Hint 1" >}}
+Checking if a number ~x~ is divisible is ~y~ is equivalent to asking if the remainder or ~x / y~ is zero. See the ~rem~ function (or its operator ~%~).
+#+hugo: {{< /expand >}}
+
+#+BEGIN_EXPORT hugo
+{{< expand "Hint 2" >}}
+
+To determine if some number `n` is prime, you need to check if any number evenly divides `n` (other than `1` and `n`).
+
+In fact, you only need to check the numbers between =2= and =floor(sqrt(n))=.
+
+{{< /expand >}}
+#+END_EXPORT
+
+*** Exercise 3
+
+Using your ~isprime~ function, print the first 50 prime numbers.

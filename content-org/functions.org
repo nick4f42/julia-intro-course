@@ -1,0 +1,11 @@
+#+HUGO_BASE_DIR: ../
+#+HUGO_SECTION: functions
+#+HUGO_WEIGHT: auto
+#+HUGO_PAIRED_SHORTCODES: katex
+#+OPTIONS: ^:{}
+
+* TODO Functions
+:PROPERTIES:
+:EXPORT_HUGO_WEIGHT: 500
+:EXPORT_FILE_NAME: _index
+:END:

@@ -1,0 +1,10 @@
+.gdoc-post__codecontainer {
+    padding-bottom: 0.25em;
+}
+
+.julia-repl {
+    background-color: var(--code-background);
+    font-size: 0.85em;
+    padding: 0.5em;
+    line-height: normal;
+}

@@ -1,0 +1,127 @@
+#+HUGO_BASE_DIR: ../
+#+HUGO_WEIGHT: auto
+#+HUGO_SECTION: mini-project-1
+#+HUGO_PAIRED_SHORTCODES: katex
+#+OPTIONS: ^:{}
+#+PROPERTY: header-args:jupyter-julia :session control-flow :exports both :eval no-export :async yes
+
+* TODO Mini-Project 1
+:PROPERTIES:
+:EXPORT_HUGO_WEIGHT: 350
+:EXPORT_FILE_NAME: _index
+:END:
+
+* Complex Numbers
+:PROPERTIES:
+
+:END:
+
+** Whole Numbers
+
+In order to understand complex numbers, we will start with the first numbers ever used by humans. We use whole numbers like 1, 2, and 3 for counting things. These numbers sufficed for a large portion of human history.
+
+** Zero
+
+The concept of /zero/ seems obvious to us, but it did not come as easily as whole numbers to our ancestors.
+
+# TODO: annotations and links
+
+** Negative Numbers
+
+#+BEGIN_EXPORT hugo
+Because numbers were mostly used for counting, the concept of a _negative_ number was hard for many to swallow. How could you have -3 apples? Ancient mathematicians would argue that the equation {{<katex>}}x+1=0{{</katex>}} has no solution. After all, how could you get one apple and end up with none?
+
+Many people now know the uses of negative numbers. The concept of -3 apples does infact have a reasonable meaning. Gaining -3 apples is the same as losing 3. Another way to think about it is to ask the question "after gaining 3 apples, how many apples do I have to lose to break even?" This is like solving the equation {{<katex>}}x+3=0{{</katex>}}.
+#+END_EXPORT
+
+** Real Numbers
+
+** Imaginary Numbers
+
+#+BEGIN_EXPORT hugo
+In the same way that the equation {{<katex>}}x+1=0{{</katex>}} lead to negative numbers, the equation {{<katex>}}x^2=-1{{</katex>}} lead to imaginary numbers.
+#+END_EXPORT
+
+** Complex Numbers
+
+* The Mandelbrot Set
+:PROPERTIES:
+:EXPORT_FILE_NAME: mandelbrot-set
+:END:
+
+** Definition
+
+#+BEGIN_EXPORT hugo
+Let {{<katex>}}c{{</katex>}} be a complex number and let {{<katex>}}z_0, z_1, \ldots{{</katex>}} be an infinite series where
+
+{{< katex display >}}
+\begin{align*}
+    z_0 &= 0 \\
+    z_n &= f(z_{n-1}, c) \\[1em]
+    f(z, c) &= z^2 + c
+\end{align*}
+{{< /katex >}}
+
+{{<katex>}}c{{</katex>}} is in the mandelbrot set if {{<katex>}}z_n{{</katex>}} does not diverge to infinity.
+#+END_EXPORT
+
+** Examples
+
+#+BEGIN_EXPORT hugo
+Let's go through a few examples. First, let's see if {{<katex>}}c = -1{{</katex>}} is in the mandelbrot set. We start out with the initial value  {{<katex>}}z_0 = 0{{</katex>}}. Then, we use {{<katex>}}f(z,c){{</katex>}} to get {{<katex>}}z_1, z_2, \ldots{{</katex>}} and so on.
+
+{{< katex display >}}
+\begin{align*}
+    z_0 &= 0 &&= 0 \\
+    z_1 &= 0^2 - 1 &&= -1 \\
+    z_2 &= (-1)^2 - 1 &&= 0 \\
+    z_3 &= 0^2 - 1 &&= -1
+\end{align*} \\
+\vdots
+{{< /katex >}}
+
+Since the sequence alternates between {{<katex>}}0{{</katex>}} and {{<katex>}}-1{{</katex>}}, it will never diverge to infinity. Therefore, {{<katex>}}-1{{</katex>}} is in the mandelbrot set.
+
+Next, let's check if {{<katex>}}1{{</katex>}} is in the mandelbrot set.
+
+{{< katex display >}}
+\begin{align*}
+    z_0 &= 0 &&= 0\\
+    z_1 &= 0^2 + 1 &&= 1 \\
+    z_2 &= 1^2 + 1 &&= 2 \\
+    z_3 &= 2^2 + 1 &&= 5 \\
+    z_4 &= 5^2 + 1 &&= 26
+\end{align*} \\
+\vdots
+{{< /katex >}}
+
+Obviously {{<katex>}}z_n{{</katex>}} will blow up for this choice of {{<katex>}}c{{</katex>}}. Therefore, {{<katex>}}1{{</katex>}} is not in the mandelbrot set.
+#+END_EXPORT
+
+** Algorithm
+
+#+BEGIN_EXPORT hugo
+It can be shown that {{<katex>}}c{{</katex>}} is not in the mandelbrot set if {{<katex>}}\left|z_n\right| > 2{{</katex>}} for some {{<katex>}}n{{</katex>}}. It is harder to conclusively show that a number is /inside/ the mandelbrot set because you can't compute {{<katex>}}z_\infty{{</katex>}}. Instead, you can set a large upper bound {{<katex>}}N{{</katex>}} and give up after {{<katex>}}z_N{{</katex>}}.
+#+END_EXPORT
+
+In pseudocode, the algorithm is:
+
+#+begin_src text
+set z to 0
+
+loop N times:
+    set z to z^2 + c
+    if abs(z) > 2:
+       return false
+
+return true
+#+end_src
+
+#+hugo: {{< expand "Pseudocode" >}}
+/Pseudocode/ is a way to express in algorithm in no specific programming language. It usually has similar syntax to common languages.
+#+hugo: {{< /expand >}}
+
+* Plotting the Mandelbrot Set
+:PROPERTIES:
+:EXPORT_FILE_NAME: plot-mandelbrot-set
+:END:

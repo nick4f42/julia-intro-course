@@ -1,0 +1,981 @@
+#+HUGO_BASE_DIR: ../
+#+HUGO_SECTION: calculations
+#+HUGO_WEIGHT: auto
+#+HUGO_PAIRED_SHORTCODES: katex
+#+OPTIONS: ^:{}
+
+* Calculations
+:PROPERTIES:
+:EXPORT_HUGO_WEIGHT: 100
+:EXPORT_FILE_NAME: _index
+:END:
+* Arithmetic
+:PROPERTIES:
+:EXPORT_FILE_NAME: arithmetic
+:END:
+** Using Julia as a Calculator
+
+Julia supports all of the arithmetic operators you would expect to find on a calculator:
+
+- addition: =+=
+- subtraction: =-=
+- multiplication: =*=
+- division: =/=
+- exponentiation: =^=
+
+Go ahead and try using these operators in the REPL. The result of these calculations is displayed on the next line.
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>2 + 2
+4
+
+<font color="#98C379"><b>julia&gt; </b></font>5 - 3
+2
+
+<font color="#98C379"><b>julia&gt; </b></font>5 * 6
+30
+
+<font color="#98C379"><b>julia&gt; </b></font>5 / 2
+2.5
+
+<font color="#98C379"><b>julia&gt; </b></font>5 ^ 2
+25
+</pre>
+#+END_EXPORT
+
+You can use parentheses to change the order of evaluation:
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>(2 + 6) * 3 / 4
+6.0
+</pre>
+#+END_EXPORT
+
+Julia comes with built-in mathematical functions like the square root:
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>sqrt(9)
+3.0
+</pre>
+#+END_EXPORT
+
+The spaces between the numbers and operators are not mandatory, but adding a single space tends to make it easier to read. Any of the following examples are valid:
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>2+2
+4
+
+<font color="#98C379"><b>julia&gt; </b></font>   2    +  2
+4
+
+<font color="#98C379"><b>julia&gt; </b></font>sqrt(  4    )
+2.0
+</pre>
+#+END_EXPORT
+
+#+BEGIN_EXPORT hugo
+Numbers can be written in scientific notation with `e`. For example, you can write {{< katex >}} 2.998 \times 10^8 {{< /katex >}} both as:
+#+END_EXPORT
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>2.998 * 10^8
+2.998e8
+
+<font color="#98C379"><b>julia&gt; </b></font>2.998e8
+2.998e8
+</pre>
+#+END_EXPORT
+
+Julia comes with some built-in mathematical constants like \pi. You can refer to it with ~pi~:
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>pi^2 / 6
+1.6449340668482264
+</pre>
+#+END_EXPORT
+
+You can also insert the \pi symbol in the REPL by typing =\pi= and pressing the ~TAB~ key.
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>\pi
+</pre>
+#+END_EXPORT
+
+After pressing ~TAB~ and entering the expression:
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>π
+π = 3.1415926535897...
+</pre>
+#+END_EXPORT
+
+** Exercises
+*** Exercise 1
+
+If you took all the bacteria in the ocean and lined them up end to end, how far would they reach?
+
+First, take a guess. Then, expand the section below and use the data to calculate an approximation.
+
+#+hugo: {{< expand "Useful Data">}}
+- There is about 1.335×10^{21} liters of water in the ocean
+- A single liter of seawater has about 100 million bacteria
+- The average bacteria is about 3 µm long (1 µm = 10^{-6} m)
+- 1 lightyear is about 9.461×10^{15} m
+- For reference, the distance to the nearest galaxy (Andromeda) is about 2.537 million light years
+#+hugo: {{< /expand >}}
+
+*** Exercise 2
+
+If you packed every human on earth into a mound, how high would it stand?
+
+Again, take a guess. Then, use the data below to calculate an approximation.
+
+#+hugo: {{< expand "Useful Data">}}
+- The average human takes up a volume of about 0.065 m^{3}
+- You can assume that 5% of the mound's volume is empty space
+- You can also assume that the mound is a 45\deg cone
+- The formula for the volume V of a 45\deg cone in terms of its height h is:
+#+BEGIN_EXPORT hugo
+{{<katex display>}}
+V = \frac13 \pi h^3
+{{</katex>}}
+#+END_EXPORT
+#+hugo: {{< /expand >}}
+
+* Variables
+:PROPERTIES:
+:EXPORT_FILE_NAME: variables
+:END:
+** Assigning Variables
+
+Often times you want to store the results of calculations for later use. Instead of writing down numbers and typing them out again, you can assign a variable with === (the /assignment/ operator).
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>x = sqrt(2)
+1.4142135623730951
+</pre>
+#+END_EXPORT
+
+Now, you can use =x= in place of =1.4142135623730951= in your future calculations.
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>x + 1
+2.414213562373095
+</pre>
+#+END_EXPORT
+
+You can also reassign =x= to another value if you change your mind:
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>x = 1.5
+1.5
+
+<font color="#98C379"><b>julia&gt; </b></font>x + 2
+3.5
+</pre>
+#+END_EXPORT
+
+#+hugo: {{< hint type=caution >}}
+It is important to note that === in Julia is not like equality in math. It is called an /assignment/ operator because it /assigns/ the variable on the left side to the value on the right side.
+#+hugo: {{< /hint >}}
+
+Variable names don't have to be a single character. They can be multiple characters long and contain letters, underscores (i.e. =_=), numbers, and even emoji. They cannot start with a number, though.
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>days_in_week = 7
+7
+
+<font color="#98C379"><b>julia&gt; </b></font>my_variable = 3 * days_in_week
+21
+
+<font color="#98C379"><b>julia&gt; </b></font>😂 = 5/7
+0.7142857142857143
+</pre>
+#+END_EXPORT
+
+You can't start a variable name with a number because Julia interprets a number before a variable as multiplication. For example:
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>x = 3
+3
+
+<font color="#98C379"><b>julia&gt; </b></font>5x
+15
+</pre>
+#+END_EXPORT
+
+If you want to see the value of a variable, you can just evaluate it by itself:
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>x = 12 * 21
+252
+
+<font color="#98C379"><b>julia&gt; </b></font>x
+252
+</pre>
+#+END_EXPORT
+
+** Changing Variables
+
+It's often useful to change the value stored in a variable. For example, say you had a quantity stored in meters inside a variable called =distance= and you want to store it in centimeters instead.
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>distance = 1.5
+1.5
+</pre>
+#+END_EXPORT
+
+The value in centimeters is ~distance * 100~, so this value is stored back into ~distance~.
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>distance = distance * 100
+150.0
+</pre>
+#+END_EXPORT
+
+Remember, the left hand side of an assignment has the variables that are being stored. The right hand side is the value. When the code gets executed, the ~distance~ on the right side is substituted for its value:
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>distance = 1.5 * 100
+150.0
+</pre>
+#+END_EXPORT
+
+# TODO: Compound assignment operators
+
+** Exercises
+*** Exercise 1
+
+Using [[https://nssdc.gsfc.nasa.gov/planetary/factsheet/][NASA's planetary fact sheet]], make variables for the mass of each planet in the solar system, the moon, and Pluto. Also make a variable for the sun's mass using [[https://nssdc.gsfc.nasa.gov/planetary/factsheet/sunfact.html][NASA's sun fact sheet]].
+
+Then, answer the following questions:
+1. What percent of the solar system's total mass does the sun take up? What about Earth? Jupiter?
+2. In kg, how much more mass does Jupiter have than Saturn? How many Earths worth of mass is this?
+3. How many more times massive is the moon than Pluto?
+*** Exercise 2
+
+Determine the mass in kg of a few everyday objects (like a car or banana) and make a variable for each one.
+
+For each of these object, determine how many of them have the same mass as
+1. The solar system
+2. Jupiter
+3. Earth
+4. Pluto
+
+* Functions
+:PROPERTIES:
+:EXPORT_FILE_NAME: functions
+:END:
+** Assignment-Style Functions
+
+In the same sense that variables can help you use the same value multiple times, functions can help you use the same expression multiple times. Say you're working with the following quadratic polynomial:
+
+#+attr_shortcode: display
+#+begin_katex
+f(x) = 3x^2 - 5x + 6
+#+end_katex
+
+The ~=~ operator can assign an expression to a function. In this case, we want =f(x)= to represent the expression =3x^2 - 5x + 6=:
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>f(x) = 3x^2 - 5x + 6
+f (generic function with 1 method)
+</pre>
+#+END_EXPORT
+
+The ~x~ inside this function is not accessible from outside. Variables that are only accessible from the inside are called /local variables/. Note that the name =x= is not special here. We could also do:
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>f(num) = 3num^2 - 5num + 6
+f (generic function with 1 method)
+</pre>
+#+END_EXPORT
+
+Now, we can evaluate the polynomial at =x=1= without typing the expression:
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>f(1)
+4
+</pre>
+#+END_EXPORT
+
+Functions can be named like variables:
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>triple(x) = 3x
+triple (generic function with 1 method)
+
+<font color="#98C379"><b>julia&gt; </b></font>triple(5)
+15
+</pre>
+#+END_EXPORT
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>raise_to_itself(x) = x ^ x
+raise_to_itself (generic function with 1 method)
+
+<font color="#98C379"><b>julia&gt; </b></font>raise_to_itself(3)
+27
+</pre>
+#+END_EXPORT
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>add4(x) = x + 4
+add4 (generic function with 1 method)
+
+<font color="#98C379"><b>julia&gt; </b></font>add4(2)
+6
+</pre>
+#+END_EXPORT
+
+** Multi-line Functions
+
+If the code you want to wrap in a function requires multiple expressions, it's best to put it in a =function= block. This is what =f= would look like if we defined it this way:
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>function f(x)
+           3x^2 - 5x + 6
+       end
+</pre>
+#+END_EXPORT
+
+The first line =function f(x)= specifies that we are defining a function named =f= that takes an argument called =x=. When you type this in the REPL, Julia recognizes that you are in the middle of typing a function and creates a new line when you press ~enter~.
+
+The next line has the expression that we wish to compute just as in the one line version. Before typing this part, press ~tab~ to indent a level. The indentation isn't required, but it makes it a lot easier to tell which code belongs to a function.
+
+The final line just has =end=, telling Julia that you are done defining the function.
+
+The value of the last expression in a function is the output. We typically call this the function's /return value/. If you provide ~f~ some input ~y~ like ~f(y)~, it is replaced with the return value (in this case, ~3y^2 - 5y + 6~).
+
+You can explicitly specify an output by prefixing it with ~return~.
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>function f(x)
+           return 3x^2 - 5x + 6
+       end
+</pre>
+#+END_EXPORT
+
+Since the code in function is executed from the top down, nothing after the ~return~ statement is executed. For example:
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>function g(x)
+           return 2x
+           return 9000
+       end
+g (generic function with 1 method)
+
+<font color="#98C379"><b>julia&gt; </b></font>g(5)
+10
+</pre>
+#+END_EXPORT
+
+*** Example: Cost of a Flight
+
+Say you were making a function to calculate the total cost of an airplane ride given the distance ~d~ it travels. You might consider several sources of cost:
+#+BEGIN_EXPORT hugo
+- Fuel costs $200 for taxi/takeof/landing and $100 per km the plane travels
+- Personnel costs $40 per km
+- Servicing the plane before takeoff and after landing costs $1000
+#+END_EXPORT
+
+Your function might look like:
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>cost(d) = 200 + 100d + 40d + 1000</pre>
+#+END_EXPORT
+
+What if later you find out that fuel now costs $110 per km? In this example, it's pretty simple to find the ~100d~ and change it to ~110d~, but as your code gets more complex  this becomes unfeasible. One way to address this is to make variabes /inside/ the function:
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>function cost(d)
+           fuel = 200 + 100d
+           personnel = 40d
+           service = 1000
+           fuel + personnel + service
+       end</pre>
+#+END_EXPORT
+
+The last expression (~fuel + personnel + service~) is returned. It's good practice to explicitly state what statement you're returning if a function has multiple lines of code, but you don't need to. If you did, the function would look like:
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>function cost(d)
+           fuel = 200 + 100d
+           personnel = 40d
+           service = 1000
+           return fuel + personnel + service
+       end</pre>
+#+END_EXPORT
+
+** Multiple Parameters
+
+The =x= in a function like =f(x) = x^2= is called the function's /parameter/. In mathematics, functions can have multiple parameters. For example,
+
+#+attr_shortcode: display
+#+begin_katex
+f(x, y) = x + y
+#+end_katex
+
+#+BEGIN_EXPORT hugo
+{{<katex>}}x{{</katex>}} and {{<katex>}}y{{</katex>}} are the function's _parameters_. Just like a one-parameter function, you can evaluate the function by substituting the variables:
+#+END_EXPORT
+
+#+attr_shortcode: display
+#+begin_katex
+f(1, 2) = 1 + 2
+#+end_katex
+
+1 and 2 are the /arguments/ in this case.
+
+#+BEGIN_EXPORT hugo
+{{< hint type=note >}}
+_Parameters_ and _arguments_ are technically not the same. _Parameters_ are the variables that receive the input values and _arguments_ are the expressions that are assigned to the parameters.
+{{< /hint >}}
+#+END_EXPORT
+
+Functions in Julia can have multiple parameters as well. For example, you could create an ~add~ function that adds two numbers:
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>add(x, y) = x + y
+add (generic function with 1 method)
+
+<font color="#98C379"><b>julia&gt; </b></font>add(1, 2)
+3
+</pre>
+#+END_EXPORT
+
+That is not very impressive though. A function ~cone_volume~ that computes the volume of a cone might be more useful:
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>function cone_volume(radius, height)
+           base_area = pi * radius^2
+           return 1/3 * height * base_area
+       end
+cone_volume (generic function with 1 method)
+
+<font color="#98C379"><b>julia&gt; </b></font>cone_volume(1, 3)
+3.141592653589793
+</pre>
+#+END_EXPORT
+
+Functions can also have /no/ arguments. Mathematically, a function without arguments would always have the same output. Functions in Julia can depend on the external state of the world, so they are not pure mathematical functions. For example, the ~time()~ function returns the number of seconds since January 1, 1970.
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>time()
+1.656337427111429e9</pre>
+#+END_EXPORT
+
+We can use this value to find the current year:
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>1970 + time() / (365.25 * 24 * 60^2)
+2022.486167415259
+</pre>
+#+END_EXPORT
+
+We can also subtract two times to measure duration:
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>t1 = time()
+1.656337287725287e9
+
+<font color="#98C379"><b>julia&gt; </b></font>t2 = time()
+1.656337292604609e9
+
+<font color="#98C379"><b>julia&gt; </b></font>t2 - t1
+4.879322052001953</pre>
+#+END_EXPORT
+
+
+** Returning Multiple Values
+
+Functions can only return a single value. If you want to return multiple values, you'll have to wrap them inside a single value. One way to do this is with a /tuple/.
+
+#+BEGIN_EXPORT hugo
+A _tuple_ is an ordered list of fixed size. The most common tuple you've probably seen are coordinates on a plane. For example, the point with {{<katex>}}x=3{{</katex>}} and {{<katex>}}y=4{{</katex>}} has coordinates {{<katex>}}(3, 4){{</katex>}}, a tuple of two numbers. In Julia, you write tuples in the same way: `(3, 4)`. A tuple of three numbers might look like `(1, 2, 3)`.
+#+END_EXPORT
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>(1, 2, 3)
+(1, 2, 3)
+
+<font color="#98C379"><b>julia&gt; </b></font>x = 5
+5
+
+<font color="#98C379"><b>julia&gt; </b></font>y = 10
+10
+
+<font color="#98C379"><b>julia&gt; </b></font>point = (x, y)
+(5, 10)
+</pre>
+#+END_EXPORT
+
+The parentheses around a tuple are actually optional in some cases, but I recommend that you always use them so it is clearly a tuple.
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>x = 1, 2
+(1, 2)
+</pre>
+#+END_EXPORT
+
+*** Example: Hours, Minutes, Seconds
+
+Consider a function that converts total seconds to hours, minutes and seconds. For example, 90 seconds should be 0 hours, 1 minute, and 30 seconds.
+
+Since this function needs to return multiple values, you can return them as a tuple =(hours, minutes, seconds)=.
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>function seconds_to_HMS(secs)
+           hours = secs ÷ 3600
+           minutes = (secs - 3600 * hours) ÷ 60
+           seconds = secs - 3600 * hours - 60 * minutes
+
+           return (hours, minutes, seconds)
+       end
+seconds_to_HMS (generic function with 1 method)
+</pre>
+#+END_EXPORT
+
+#+hugo: {{< expand "Explanation">}}
+
+~secs / 3600~ gives the total number of hours (including a fractional part in general). In order to get a whole number of hours, we will use ~div~ instead.
+
+~div(x, y)~ returns the result of ~x / y~ after rounding towards zero. For example, ~div(5, 2)~ is ~2~. There is an operator for this function ~÷~ which you can type in the REPL by typing =\div= and pressing tab. Then, ~div(x, y)~ is the same as ~x ÷ y~.
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>7 ÷ 4
+1
+
+<font color="#98C379"><b>julia&gt; </b></font>div(7, 4)
+1
+
+<font color="#98C379"><b>julia&gt; </b></font>8 ÷ 4
+2
+</pre>
+#+END_EXPORT
+
+~hours~ is then ~secs ÷ 3600~.
+
+~minutes~ is then ~(secs - 3600 * hours) ÷ 60~ since ~3600 * hours~ seconds were already accounted for.
+
+~seconds~ is the total seconds minus those account for in ~hours~ and ~minutes~: ~secs - 3600 * hours - 60 * minutes~.
+
+Then, we return a tuple containing these 3 values: ~(hours, minutes, seconds)~.
+
+#+hugo: {{< /expand >}}
+
+Testing this function out gives the expected results:
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>seconds_to_HMS(35)
+(0, 0, 35)
+
+<font color="#98C379"><b>julia&gt; </b></font>seconds_to_HMS(90)
+(0, 1, 30)
+
+<font color="#98C379"><b>julia&gt; </b></font>seconds_to_HMS(3723)
+(1, 2, 3)
+</pre>
+#+END_EXPORT
+
+** Methods
+
+Up until now, we've ignored the message =generic function with 1 method= that you get after defining a function. To understand it, you'll need to know the difference between a function and a method.
+
+*** Function vs Method
+
+You can think of a method as a function and a specific pattern of parameters. It's easier to understand with an example, though. Consider the ~add~ function from the previous section.
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>add(x, y) = x + y
+add (generic function with 1 method)
+</pre>
+#+END_EXPORT
+
+
+The above code defines a /method/ for the ~add~ function with parameters ~(x, y)~. Functions in Julia can have multiple methods. For example, you could define a method of ~add~ with 3 parameters:
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>add(x, y, z) = x + y + z
+add (generic function with 2 methods)
+</pre>
+#+END_EXPORT
+
+Notice that the ~add~ function now has 2 methods. One method takes ~(x, y)~ and the other takes ~(x, y, z)~.
+
+#+hugo: {{< hint type=note >}}
+You can redefine methods, but you cannot delete them. If you wish to clear all the methods from a function, you must restart the REPL.
+#+hugo: {{< /hint >}}
+
+*** Multiple Dispatch
+
+When you call a function, Julia has to decide which method to use. It does this by finding a method with matching parameters. For example, take the ~add~ function and the 2 methods we defined previously:
+
+#+begin_src julia :exports code
+add(x, y)    = x + y
+add(x, y, z) = x + y + z
+#+end_src
+
+Say you call the function with ~add(5, 10)~. That fits the pattern specified by the first method ~add(x, y)~ since there are 2 arguments. Therefore, the code ~5 + 10~ is executed. If you called the function with ~add(1, 2, 3)~, it would match the second method ~add(x, y, z)~.
+
+You can call other methods from the same function:
+#+begin_src julia :exports code
+add(a, b, c, d) = add(a, b) + add(c, d)
+#+end_src
+
+Be careful that your methods don't call each other in an infinite loop.
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>f(x) = f(x, 0)
+f (generic function with 1 method)
+
+<font color="#98C379"><b>julia&gt; </b></font>f(x, y) = f(x + y)
+f (generic function with 2 methods)
+</pre>
+#+END_EXPORT
+
+Calling ~f(1)~ calls ~f(1, 0)~ which calls ~f(1)~ which calls ~f(1, 0)~ and so on forever. In reality, your computer will give up after a short while:
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>f(1)
+<font color="#E06C75"><b>ERROR: </b></font>StackOverflowError:
+Stacktrace:
+     [1] <b>f(</b><font color="#5C6370">x</font>::Int64<b>)</b>
+<font color="#5C6370">       @ </font><font color="#C678DD">Main</font> <font color="#5C6370">./</font><font color="#5C6370"><u style="text-decoration-style:single">REPL[1]:1</u></font>
+     [2] <b>f(</b><font color="#5C6370">x</font>::Int64, <font color="#5C6370">y</font>::Int64<b>)</b>
+<font color="#5C6370">       @ </font><font color="#C678DD">Main</font> <font color="#5C6370">./</font><font color="#5C6370"><u style="text-decoration-style:single">REPL[2]:1</u></font>
+<font color="#5C6370">--- the last 2 lines are repeated 39990 more times ---</font>
+ [79983] <b>f(</b><font color="#5C6370">x</font>::Int64<b>)</b>
+<font color="#5C6370">       @ </font><font color="#C678DD">Main</font> <font color="#5C6370">./</font><font color="#5C6370"><u style="text-decoration-style:single">REPL[1]:1</u></font>
+</pre>
+#+END_EXPORT
+
+There are more ways to specify argument patterns other than the number of arguments. You will learn more about these in a later section.
+
+** Exercises
+*** Exercise 1
+
+Make a function ~feet_to_cm~ that converts a quantity in feet to centimeters. It should have two methods:
+
+- ~feet_to_cm(feet)~
+- ~feet_to_cm(feet, inches)~
+
+For example:
+
+- 6 feet = 182.88 cm
+- 5 feet 11 inches = 180.34 cm
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>feet_to_cm(6)
+182.88
+
+<font color="#98C379"><b>julia&gt; </b></font>feet_to_cm(5, 11)
+180.34
+</pre>
+#+END_EXPORT
+
+*** Exercise 2
+
+Write a function ~quadratic_roots(a, b, c)~ that returns the roots of a quadratic polynomial with coefficients =a=, =b=, and =c=:
+
+#+attr_shortcode: display
+#+begin_katex
+ax^2 + bx + c
+#+end_katex
+
+For example,
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>quadratic_roots(2, -4, -16)
+(-2.0, 4.0)
+</pre>
+#+END_EXPORT
+
+* Errors
+:PROPERTIES:
+:EXPORT_FILE_NAME: errors
+:END:
+
+When Julia cannot understand or run a command, you will get an error. Being a good programmer is more about knowing how to interpret errors than never getting them. Let's go through a couple basic errors you might get when typing in the REPL.
+
+** Syntax Errors
+
+*** Extra Space
+
+Syntax errors occur when Julia can't understand your code. You might get one if you accidentally type a space where you shouldn't:
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>12 3 + 1
+<font color="#E06C75"><b>ERROR: </b></font>syntax: extra token &quot;3&quot; after end of expression
+Stacktrace:
+ [1] top-level scope
+<font color="#777777">   @ </font><font color="#777777"><u style="text-decoration-style:single">none:1</u></font>
+</pre>
+#+END_EXPORT
+
+Errors can sometimes look overwhelming, but most of the time all the information you need is on the first couple lines. In this case, all we need is the first line of the error message:
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl">
+<font color="#E06C75"><b>ERROR: </b></font>syntax: extra token &quot;3&quot; after end of expression
+</pre>
+#+END_EXPORT
+
+=ERROR: syntax= means that Julia couldn't understand the code you wrote. The text that follows tells you exactly what Julia couldn't understand. In this case, Julia read =12= as a full number and was expecting an operator like =+= or =*= to follow it. Since Julia got =3= and not an operator, it gave up and threw an error.
+
+This line alone gives you enough information to change =12 3= to =123=. Right now, you don't need to worry about the =Stacktrace= that follows the first line. Later on, you'll learn how to use it to decipher more complex errors.
+
+*** Mismatched Brackets
+
+Another syntax error you get is caused by mismatched brackets. For example, if you add one two many closing parentheses:
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>(1 + 2))
+<font color="#E06C75"><b>ERROR: </b></font>syntax: extra token &quot;)&quot; after end of expression
+Stacktrace:
+ [1] top-level scope
+<font color="#757379">   @ </font><font color="#757379"><u style="text-decoration-style:single">none:1</u></font>
+</pre>
+#+END_EXPORT
+
+*** Assigning to a Value
+
+The statement ~1 = 1~ looks alright from a mathematical perspective. However, it doesn't work in Julia.
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>1 = 1
+<font color="#E06C75"><b>ERROR: </b></font>syntax: invalid assignment location &quot;1&quot; around REPL[1]:1
+Stacktrace:
+ [1] top-level scope
+<font color="#5C6370">   @ </font><font color="#5C6370"><u style="text-decoration-style:single">REPL[1]:1</u></font>
+</pre>
+#+END_EXPORT
+
+Remember that ~=~ is the /assignment/ operator in Julia. ~1 = 1~ translates to "assign =1= to the variable =1=." This doesn't work since ~1~ isn't a variable.
+
+** Undefined Variable Errors
+
+Another common error is trying to access a variable or function that doesn't exist. This can happen if you make a typo:
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>sqrt(9)
+3.0
+
+<font color="#98C379"><b>julia&gt; </b></font>ssqrt(4)
+<font color="#E06C75"><b>ERROR: </b></font>UndefVarError: ssqrt not defined
+Stacktrace:
+ [1] top-level scope
+<font color="#757379">   @ </font><font color="#757379"><u style="text-decoration-style:single">REPL[3]:1</u></font>
+</pre>
+#+END_EXPORT
+
+Again, the first line of the error tells you that =ssqrt not defined=.
+
+** Exercises
+
+*** Exercise 1
+
+The following code has a couple mistakes. Find and remove them so that it runs without error.
+
+#+begin_src julia
+sqrt(5 * sqrt(3 - 6/5 + 152.926))) / (5 * sqet(6.2))
+#+end_src
+
+*** Exercise 2
+
+#+BEGIN_EXPORT hugo
+Consider a body with gravitational parameter {{<katex>}}\mu{{</katex>}} The force of gravity on a body with mass {{<katex>}}m{{</katex>}} at a position {{<katex>}}(x,y,z){{</katex>}} relative to the attracting body is:
+
+{{< katex display >}}
+    \vec{F} = \left(-F \frac{x}{r}, -F \frac{y}{r}, -F \frac{z}{r}\right)
+{{< /katex >}}
+
+
+Where {{<katex>}}F{{</katex>}} is the magnitude of the force (found with Newton's law of gravitation):
+
+{{< katex display >}}
+    F = \frac{\mu m}{r^2}
+{{< /katex >}}
+
+And where {{<katex>}}r{{</katex>}} is the distance between the bodies:
+
+{{< katex display >}}
+    r = \sqrt{x^2 + y^2 + z^2}
+{{< /katex >}}
+
+The following function is meant to return a tuple that represents  {{<katex>}}\vec{F}{{</katex>}}, but there are some errors. Fix the errors so that the function runs.
+#+END_EXPORT
+
+#+begin_src text
+function gravity_force(μ, m, x, y, z)
+    r = sqrt (x^2 + y^2 + z^2)
+    F = μm/R^2
+    output (-F * x/r, -F * y/r, --F * z/r)
+end
+#+end_src
+
+You can test your function with:
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>gravity_force(1e9, 1e5, -3e5, 5e5, 2e4)
+(151.05563385525724, -251.75938975876204, -10.070375590350482)
+
+<font color="#98C379"><b>julia&gt; </b></font>gravity_force(1e10, 1e2, 1e5, 2e4, -8e4)
+(-45.92361606014639, -9.184723212029278, 36.73889284811711)</pre>
+</pre>
+#+END_EXPORT
+
+* Patterns
+:PROPERTIES:
+:EXPORT_FILE_NAME: patterns
+:END:
+** Assigning Variables
+
+Consider the following assignment:
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>a = 4
+4
+</pre>
+#+END_EXPORT
+
+The ~=~ operator can actually do bit more than assigning a value to a variable. You can actually thing of the left side as a /pattern/ that is matching the right side.
+
+A variable name is a pattern that matches anything, including tuples for example.
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>b = (1, 2)
+(1, 2)
+
+<font color="#98C379"><b>julia&gt; </b></font>b
+(1, 2)
+</pre>
+#+END_EXPORT
+
+What if we want to assign values in a tuple to separate variables? That is where pattern matching comes in handy:
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>x, y = b
+(1, 2)
+
+<font color="#98C379"><b>julia&gt; </b></font>x
+1
+
+<font color="#98C379"><b>julia&gt; </b></font>y
+2
+</pre>
+#+END_EXPORT
+
+~x, y~ is a /pattern/ that represents a list of 2 numbers. Since ~b~ is a tuple of 2 numbers ~(1, 2)~, it matches that pattern. The corresponding values are assigned to ~x~ and ~y~.
+
+The left side of an assignment is the /pattern/ and the right side is the /value/. Variables on the ride side are expanded to their actual values, and variables on the left side are assigned to their corresponding value on the right.
+
+You can surround the pattern with parentheses if you'd like:
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>(x, y) = b
+(1, 2)
+</pre>
+#+END_EXPORT
+
+Although it looks like a tuple, ~(x, y)~ is not a tuple. The left side of an assignment is always a /pattern/.
+
+Here is another example:
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>(hours, minutes, seconds) = (5, 3, 32)
+(5, 3, 32)
+
+<font color="#98C379"><b>julia&gt; </b></font>hours
+5
+
+<font color="#98C379"><b>julia&gt; </b></font>minutes
+3
+
+<font color="#98C379"><b>julia&gt; </b></font>seconds
+32
+</pre>
+#+END_EXPORT
+
+The pattern ~x, y~ actually matches any list with at least 2 elements. For example:
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>x, y = (1, 2, 3)
+(1, 2, 3)
+
+<font color="#98C379"><b>julia&gt; </b></font>x
+1
+
+<font color="#98C379"><b>julia&gt; </b></font>y
+2
+</pre>
+#+END_EXPORT
+
+
+If the pattern in an assignment doesn't match, you get an error:
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>x, y, z = (1, 2)
+<font color="#E06C75"><b>ERROR: </b></font>BoundsError: attempt to access Tuple{Int64, Int64} at index [3]
+Stacktrace:
+ [1] <b>indexed_iterate(</b><font color="#5C6370">t</font>::Tuple<font color="#5C6370">{Int64, Int64}</font>, <font color="#5C6370">i</font>::Int64, <font color="#5C6370">state</font>::Int64<b>)</b>
+<font color="#5C6370">   @ Base</font> <font color="#5C6370">./</font><font color="#5C6370"><u style="text-decoration-style:single">tuple.jl:89</u></font>
+ [2] top-level scope
+<font color="#5C6370">   @ </font><font color="#5C6370"><u style="text-decoration-style:single">REPL[7]:1</u></font>
+</pre>
+#+END_EXPORT
+
+You can even match lists inside lists. For example:
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>a = (1, (2, 3))
+(1, (2, 3))
+
+<font color="#98C379"><b>julia&gt; </b></font>x, (y, z) = a
+(1, (2, 3))
+
+<font color="#98C379"><b>julia&gt; </b></font>(x, y, z)
+(1, 2, 3)</pre>
+#+END_EXPORT
+
+** Assigning Functions
+
+Assigning a function is like a delayed pattern match. Consider the function ~f~:
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>f(x) = x^2
+f (generic function with 1 method)
+</pre>
+#+END_EXPORT
+
+~f(3)~ matches the pattern ~f(x)~ and therefore is replaced with ~3^2~. This is just like how after the assignment ~y = 3~, ~y~ is replaced with ~3~.
+
+The same works with multiple parameters:
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>g(a, b) = a - b
+g (generic function with 1 method)
+
+<font color="#98C379"><b>julia&gt; </b></font>g(5, 3)
+2
+</pre>
+#+END_EXPORT
+
+Each parameter is a pattern just like in the left side of an assignment. For example, you could do:
+
+#+BEGIN_EXPORT html
+<pre class="julia-repl"><font color="#98C379"><b>julia&gt; </b></font>h(a, (x, y)) = a + x + y
+h (generic function with 1 method)
+
+<font color="#98C379"><b>julia&gt; </b></font>h(1, (2, 3))
+6
+
+<font color="#98C379"><b>julia&gt; </b></font>h(1, (2, 3, 10000))
+6
+</pre>
+#+END_EXPORT
+
+For example, calling ~h(1, (2, 3))~ makes the following assignments inside ~h~:
+
+#+begin_src julia
+a = 1
+(x, y) = (2, 3)
+#+end_src

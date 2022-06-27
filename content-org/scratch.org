@@ -1,0 +1,58 @@
+#+TITLE: Scratch
+
+#+hugo: {{< expand "Background" >}}
+
+Consider the following function:
+
+#+attr_shortcode: display
+#+begin_katex
+f(n) = \begin{cases}
+\frac{n}{2} & n\ \text{even} \\
+3n + 1 & n\ \text{odd}
+\end{cases}
+#+end_katex
+
+In words, ~f(n)~ is ~n÷2~ if ~n~ is even and ~3n+1~ if ~n~ is odd.
+
+Consider applying ~f~ to some number repeatedly, e.g. ~f(f(f(n)))~. For example, say you start with 5:
+
+#+attr_shortcode: display
+#+begin_katex
+\begin{align*}
+f(5) &= 16 \\
+f(16) &= 8 \\
+f(8) &= 4 \\
+f(4) &= 2 \\
+f(2) &= 1 \\
+f(1) &= 4
+\end{align*}
+#+end_katex
+
+Notice that there is a cycle ~4 -> 2 -> 1 -> 4~. It turns out, nobody has been able to prove that there is a positive integer that /doesn't/ end up in this cycle. This is the [[https://en.wikipedia.org/wiki/Collatz_conjecture][Collatz Conjecture]], an unsolved problems in mathematics. If you want to learn more, [[https://www.youtube.com/watch?v=094y1Z2wpJg][this video]] might interest you.
+
+#+hugo: {{< /expand >}}
+
+** Exercise 1
+
+Create a function ~collatz_step(n)~ that returns ~n÷2~ is ~n~ is even and ~3n+1~
+
+- For example, ~collatz_step(2)~ is ~1~ and ~collatz_step(1)~ is ~4~
+
+** Exercise 2
+
+Create a function ~collatz_chain(n)~ that implements the following algorithm:
+
+1. Print ~n~
+2. Reassign ~n = collatz_step(n)~
+3. Print ~n~
+4. If ~n~ is ~1~, stop. Otherwise, go to step 2.
+
+** Exercise 3
+
+Create a function ~collatz_length(n)~ that returns the number of numbers printed by ~collatz_chain(n)~.
+
+Hint: You can copy the definition of ~collatz_chain~ and change the printing logic to counting logic.
+
+** Exercise 4
+
+Print the value of ~collatz_length(n)~ for every integer 1 through 100.
