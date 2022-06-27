@@ -3,8 +3,8 @@
 }
 
 .julia-repl {
-    font-size: 0.85em;
     background-color: var(--code-background);
+    font-size: 0.85em;
     padding: 0.5em;
     line-height: normal;
 }
