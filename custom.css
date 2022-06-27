@@ -1,0 +1,14 @@
+.gdoc-post__codecontainer {
+    padding-bottom: 0.25em;
+}
+
+.julia-repl {
+    font-size: 0.85em;
+    background-color: var(--code-background);
+    padding: 0.5em;
+    line-height: normal;
+}
+
+/* :root[color-theme="dark"] .gdoc-hint__text code { */
+/*     filter: invert(1) hue-rotate(180deg); */
+/* } */
